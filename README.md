@@ -7,6 +7,46 @@
 <a href="https://packagist.org/packages/laravel/framework"><img src="https://poser.pugx.org/laravel/framework/license.svg" alt="License"></a>
 </p>
 
+## Clonar Repositorio
+
+<h3>1. Copiar la dirección HTTPS del repositorio</h3>
+
+Copia la dirección HTTPS del repositorio alojado en la plataforma de código la encuentras en la opción de clonar
+
+<h3>2. Dirigirse al directorio</h3>
+
+Abre la consola de comandos de Git y dirigase al directorio donde desea guardar el proyecto o abra la consola mediante Git Bash Here donde se quiera guardar el proyecto
+
+<h3>3. Clonar repositorio</h3>
+
+Ejecuta el siguiente comando
+
+<pre>git clone https://github.com/LuisCaiguaray/proyecto-tais-verano.git</pre>
+
+<h3>3. Instalar paquetes o dependencias</h3>
+
+Ahora entra en la carpeta del proyecto que acabas de clonar desde la Terminal o consola de Git con el comando cd y el nombre del proyecto justo como el paso 1. Ya adentro del proyecto ejecuta el comando:
+
+<pre>composer install</pre>
+
+Esto te descargará e instalará las dependencias utilizadas por el proyecto. 
+
+<h3>4. Clonar contenido del archivo .env.example</h3>
+
+El siguiente paso es copiar el contenido del archivo .env.example en un nuevo archivo con el nombre .env. El archivo .env.example lo encuentras en la raíz del proyecto de Laravel. Pero espera, te tengo una solución más rápida y sencilla utilizando la Terminal. Dentro de la carpeta de tu proyecto ejecuta el siguiente comando:
+
+<pre>cp .env.example .env</pre>
+
+<h3>5. Generar APP_KEY y prueba</h3>
+
+La APP_KEY es una cadena de carácteres generada aleatoriamente por Laravel que utiliza para todas las cookies cifradas, como las cookies de sesión. Para generar la APP_KEY del proyecto ejecuta el siguiente comando:
+
+<pre>php artisan key:generate</pre>
+
+Ahora ejecuta servidor y abre la dirección en el navegador
+
+<pre>php artisan serve</pre>
+
 ## About Laravel
 
 Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
