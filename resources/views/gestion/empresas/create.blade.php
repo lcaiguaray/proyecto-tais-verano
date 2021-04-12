@@ -17,7 +17,7 @@
 @section('contenido')
     <div class="row">
         <div class="col-lg-8 col-md-8 col-sm-8 col-8">
-            <h4>Registrar</h4>
+            <h4><i class="mdi mdi-buffer"></i> Registrar</h4>
             <p class="text-gray">Nueva Empresa</p>
         </div>
     </div>

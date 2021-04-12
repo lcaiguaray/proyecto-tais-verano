@@ -34,6 +34,19 @@ Route::group(['middleware' => 'auth'], function () {
         // DATATABLE
         Route::get('/datatable', 'Gestion\EmpresaController@datatable_empresas')->name('empresas.datatable_datos');
     });
+
+    // USUARIOS
+    Route::prefix('usuarios')->group(function() {
+        Route::get('/', 'Gestion\UsuarioController@index')->name('usuarios');
+        Route::get('/registrar', 'Gestion\UsuarioController@create')->name('usuarios.create');
+        Route::post('/registrar', 'Gestion\UsuarioController@store')->name('usuarios.store');
+        Route::get('/actualizar/{id}', 'Gestion\UsuarioController@edit')->name('usuarios.edit');
+        Route::put('/actualizar/{id}', 'Gestion\UsuarioController@update')->name('usuarios.update');
+        Route::put('/deshabilitar/{id}', 'Gestion\UsuarioController@delete')->name('usuarios.delete');
+        Route::put('/habilitar/{id}', 'Gestion\UsuarioController@active')->name('usuarios.active');
+        // DATATABLE
+        Route::get('/datatable', 'Gestion\UsuarioController@datatable_usuarios')->name('usuarios.datatable_datos');
+    });
 });
 
 

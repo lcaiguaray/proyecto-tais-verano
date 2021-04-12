@@ -45,6 +45,7 @@ class EmpresaController extends Controller
             ->toJson();
     }
     // END DATATABLE
+    
     public function index(){
         return view('gestion.empresas.index');
     }

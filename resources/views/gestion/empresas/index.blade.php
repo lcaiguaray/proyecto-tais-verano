@@ -11,7 +11,7 @@
 @section('contenido')
     <div class="row">
         <div class="col-lg-8 col-md-8 col-sm-8 col-8">
-            <h4>Empresas</h4>
+            <h4><i class="mdi mdi-buffer"></i> Empresas</h4>
             <p class="text-gray">Lista de empresas</p>
         </div>
         <div class="col-lg-4 col-md-4 col-sm-4 col-4">
@@ -119,6 +119,7 @@
             }).show();
         }
         // END NOTIFICATION
+
         // MODALS
         function showModalDelete(event) {
             var button = $(event.relatedTarget) // Button that triggered the modal

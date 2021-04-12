@@ -12,10 +12,16 @@
     <li class="@yield('item-principal')">
         <a href="{{ route('home') }}">
             <span class="link-title">Dashboard</span>
-            <i class="mdi mdi-gauge link-icon"></i>
+            <i class="mdi mdi-home-variant link-icon"></i>
         </a>
     </li>
-    <li class="nav-category-divider">GESTION</li>
+    <li class="nav-category-divider">GESTIÓN</li>
+    <li class="@yield('item-usuarios')">
+        <a href="{{ route('usuarios') }}">
+            <span class="link-title">Usuarios</span>
+            <i class="mdi mdi-account-multiple link-icon"></i>
+        </a>
+    </li>
     <li class="@yield('item-empresas')">
         <a href="{{ route('empresas') }}">
             <span class="link-title">Empresas</span>
