@@ -18,10 +18,35 @@ class EmpresaController extends Controller
         $this->middleware('auth');
     }
 
-    public function index(){
+    // DATATABLES
+    function datatable_empresas(){
         $empresas = Empresa::all();
 
-        return view('gestion.empresas.index', compact('empresas'));
+        return Datatables()->of($empresas)
+            ->editColumn('activo', function(Empresa $empresa){
+                if($empresa->activo) return '<span class="badge badge-success">ACTIVA</span>';
+                else return '<span class="badge badge-danger">INACTIVA</span>';
+            })
+            ->addColumn('actions', function(Empresa $empresa){
+                $buttons = '';
+
+                if($empresa->activo)
+                    $buttons = '<a href="'.route("empresas.edit", $empresa->id).'" class="btn btn-sm action-btn btn-inverse-info" title="Editar" data-original-title="Editar">
+                        <i class="mdi mdi-lead-pencil"></i></a>
+                    <button type="button" class="btn btn-sm action-btn btn-inverse-danger" data-toggle="modal" data-target="#delete" title="Deshabilitar" data-original-title="Deshabilitar" data-id="'.$empresa->id.'" data-nombre="'.$empresa->razon_social.'">
+                        <i class="mdi mdi-arrow-down-bold-hexagon-outline"></i>
+                    </button>';
+                else
+                    $buttons = '<button type="button" class="btn btn-sm action-btn btn-inverse-success" data-toggle="modal" data-target="#active" title="Habilitar" data-original-title="Habilitar" data-id="'.$empresa->id.'" data-nombre="'.$empresa->razon_social.'">
+                        <i class="mdi mdi-arrow-up-bold-hexagon-outline"></i></button>';
+                return $buttons;
+            })
+            ->rawColumns(['actions', 'activo'])
+            ->toJson();
+    }
+    // END DATATABLE
+    public function index(){
+        return view('gestion.empresas.index');
     }
 
     public function create(){
@@ -61,18 +86,18 @@ class EmpresaController extends Controller
         $empresa->direccion = $request->direccion;
         $empresa->created_by = Auth::user()->id;
         $empresa->save();
+        
+        $message = '<span class="font-weight-bold"><i class="mdi mdi-bell"></i> Se ha registrado correctamente la empresa.</span>';
+        $theme = 'sunset';
+        $type = 'success';
 
-        $message = 'Se ha registrado correctamente la empresa.';
-        $type = 's';
-        $icon = 's';
-
-        $arrayMessage = [
+        $notificacion = [
             'message' => $message,
+            'theme' => $theme,
             'type' => $type,
-            'icon' => $icon
         ];
 
-        return redirect()->route('empresas')->with(['message' => $arrayMessage]);
+        return redirect()->route('empresas')->with(['notificacion' => $notificacion]);
     }
 
     public function edit($id){
@@ -114,21 +139,25 @@ class EmpresaController extends Controller
         $empresa->direccion = $request->direccion;
         $empresa->updated_by = Auth::user()->id;
         $empresa->update();
+        
+        $message = '<span class="font-weight-bold"><i class="mdi mdi-bell"></i> Se ha actualizado correctamente la empresa.</span>';
+        $theme = 'sunset';
+        $type = 'success';
 
-        $message = 'Se ha registrado correctamente la empresa.';
-        $type = 's';
-        $icon = 's';
-
-        $arrayMessage = [
+        $notificacion = [
             'message' => $message,
+            'theme' => $theme,
             'type' => $type,
-            'icon' => $icon
         ];
 
-        return redirect()->route('empresas')->with(['message' => $arrayMessage]);
+        return redirect()->route('empresas')->with(['notificacion' => $notificacion]);
     }
 
-    public function delete(Request $request, $id){        
+    public function delete(Request $request, $id){
+        $error = false;
+        $message = "";
+        $collection = collect([]);
+
         $empresa = Empresa::FindOrFail($id);
         $empresa->activo = false;
         $empresa->deleted_by = Auth::user()->id;
@@ -136,17 +165,45 @@ class EmpresaController extends Controller
         $empresa->deleted_at = Carbon::now();
         $empresa->update();
 
-        return redirect()->route('empresas');
+        $message = '<span class="font-weight-bold"><i class="mdi mdi-bell"></i> Se ha deshabilitado correctamente la empresa.</span>';
+        $theme = 'sunset';
+        $type = 'success';
+
+        $response = [
+            'error' => $error,
+            'message' => $message,
+            'theme' => $theme,
+            'type' => $type,
+            'datos' => $collection
+        ];
+
+        return response()->json($response);
     }
 
     public function active(Request $request, $id){
+        $error = false;
+        $message = "";
+        $collection = collect([]);
+
         $empresa = Empresa::FindOrFail($id);
         $empresa->activo = true;
         $empresa->activated_by = Auth::user()->id;
         $empresa->updated_by = Auth::user()->id;
         $empresa->activated_at = Carbon::now();
         $empresa->update();
+        
+        $message = '<span class="font-weight-bold"><i class="mdi mdi-bell"></i> Se ha habilitado correctamente la empresa.</span>';
+        $theme = 'sunset';
+        $type = 'success';
 
-        return redirect()->route('empresas');
+        $response = [
+            'error' => $error,
+            'message' => $message,
+            'theme' => $theme,
+            'type' => $type,
+            'datos' => $collection
+        ];
+
+        return response()->json($response);
     }
 }

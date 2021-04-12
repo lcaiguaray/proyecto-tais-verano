@@ -11,6 +11,8 @@
     <!-- endinject -->
     <!-- inject:css -->
     <link rel="stylesheet" href="{{ asset('assets/css/shared/style.css') }}">
+    <link rel="stylesheet" href="{{ asset('assets/plugins/noty/noty.css') }}">
+    <link rel="stylesheet" href="{{ asset('assets/plugins/noty/animate.css') }}">
     <!-- endinject -->
     <link rel="stylesheet" href="{{ asset('assets/css/demo_1/style.css') }}">
     <link rel="shortcut icon" href="{{ asset('assets/images/logo.svg') }}" />
@@ -57,6 +59,7 @@
     <!-- SCRIPT LOADING START FORM HERE /////////////-->
     <!-- plugins:js -->
     <script src="{{ asset('assets/vendors/js/core.js') }}"></script>
+    <script src="{{ asset('assets/plugins/noty/noty.js') }}"></script>
     <!-- endinject -->
     <!-- Vendor Js For This Page Ends-->
     <script src="{{ asset('assets/vendors/apexcharts/apexcharts.min.js') }}"></script>

@@ -31,6 +31,8 @@ Route::group(['middleware' => 'auth'], function () {
         Route::put('/actualizar/{id}', 'Gestion\EmpresaController@update')->name('empresas.update');
         Route::put('/deshabilitar/{id}', 'Gestion\EmpresaController@delete')->name('empresas.delete');
         Route::put('/habilitar/{id}', 'Gestion\EmpresaController@active')->name('empresas.active');
+        // DATATABLE
+        Route::get('/datatable', 'Gestion\EmpresaController@datatable_empresas')->name('empresas.datatable_datos');
     });
 });
 

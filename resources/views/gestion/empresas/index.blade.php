@@ -3,8 +3,9 @@
 @section('title', '| Empresas')
 @section('item-empresas', 'active')
 
-@section('css_after')
+@section('css_before')
     <!-- Page JS Plugins CSS -->
+    <link rel="stylesheet" href="{{ asset('assets/plugins/dataTables/DataTables-1.10.24/css/dataTables.bootstrap4.css') }}">
 @endsection
 
 @section('contenido')
@@ -22,49 +23,25 @@
             <div class="grid">
                 <div class="grid-body">
                     <div class="table-responsive">
-                        <div class="col-md-4 mb-3 float-right">
-                            <input class="form-control form-control-sm light-table-filter" data-table="order-table" type="text" placeholder="Buscar">
-                        </div>
-                        <table class="table table-sm order-table">
+                        <table id="table_empresas" class="table" style="width:100%">
                             <thead>
                                 <tr>
                                     <th class="text-center" style="width: 15%">RUC</th>
                                     <th style="width: 30%">Razon Social</th>
-                                    <th>Email</th>
-                                    <th>Estado</th>
-                                    <th>Acciones</th>
+                                    <th style="width: 30%">Email</th>
+                                    <th class="text-center" style="width: 10%">Estado</th>
+                                    <th class="text-center" style="width: 15%">Acciones</th>
                                 </tr>
                             </thead>
-                            <tbody>
-                                @foreach ($empresas as $empresa)
-                                    <tr>
-                                        <td class="text-center">{{ $empresa->ruc }}</td>
-                                        <td>{{ $empresa->razon_social }}</td>
-                                        <td>{{ $empresa->email }}</td>
-                                        <td>
-                                            @if ($empresa->activo)
-                                                <span class="badge badge-success">Activo</span>
-                                            @else
-                                                <span class="badge badge-danger">No Activo</span>
-                                            @endif
-                                        </td>
-                                        <td>
-                                            @if ($empresa->activo)
-                                                <a href="{{ route('empresas.edit', $empresa->id) }}" class="btn btn-sm action-btn btn-inverse-info" title="Editar" data-original-title="Editar">
-                                                    <i class="mdi mdi-lead-pencil"></i>
-                                                </a>
-                                                <button type="button" class="btn btn-sm action-btn btn-inverse-danger" data-toggle="modal" data-target="#delete" title="Deshabilitar" data-original-title="Deshabilitar" data-id="{{ $empresa->id }}" data-nombre="{{ $empresa->razon_social }}">
-                                                    <i class="mdi mdi-arrow-down-bold-hexagon-outline"></i>
-                                                </button>
-                                            @else
-                                                <button type="button" class="btn btn-sm action-btn btn-inverse-success" data-toggle="modal" data-target="#active" title="Habilitar" data-original-title="Habilitar" data-id="{{ $empresa->id }}" data-nombre="{{ $empresa->razon_social }}">
-                                                    <i class="mdi mdi-arrow-up-bold-hexagon-outline"></i>
-                                                </button>
-                                            @endif
-                                        </td>
-                                    </tr>
-                                @endforeach
-                            </tbody>
+                            <tfoot>
+                                <tr>
+                                    <th class="text-center" style="width: 15%">RUC</th>
+                                    <th style="width: 30%">Razon Social</th>
+                                    <th style="width: 30%">Email</th>
+                                    <th class="text-center" style="width: 10%">Estado</th>
+                                    <th class="text-center" style="width: 15%">Acciones</th>
+                                </tr>
+                            </tfoot>
                         </table>
                     </div>
                 </div>
@@ -78,76 +55,138 @@
 
 @section('js_after')
     <!-- Page JS Plugins JS -->
-    <script type="text/javascript">
-        (function(document) {
-          'use strict';
-    
-          var LightTableFilter = (function(Arr) {
-    
-            var _input;
-    
-            function _onInputEvent(e) {
-              _input = e.target;
-              var tables = document.getElementsByClassName(_input.getAttribute('data-table'));
-              Arr.forEach.call(tables, function(table) {
-                Arr.forEach.call(table.tBodies, function(tbody) {
-                  Arr.forEach.call(tbody.rows, _filter);
-                });
-              });
-            }
-    
-            function _filter(row) {
-              var text = row.textContent.toLowerCase(), val = _input.value.toLowerCase();
-              row.style.display = text.indexOf(val) === -1 ? 'none' : 'table-row';
-            }
-    
-            return {
-              init: function() {
-                var inputs = document.getElementsByClassName('light-table-filter');
-                Arr.forEach.call(inputs, function(input) {
-                  input.oninput = _onInputEvent;
-                });
-              }
-            };
-          })(Array.prototype);
-    
-          document.addEventListener('readystatechange', function() {
-            if (document.readyState === 'complete') {
-              LightTableFilter.init();
-            }
-          });
-    
-        })(document);
-    </script>
+    <script src="{{ asset('assets/plugins/dataTables/DataTables-1.10.24/js/jquery.dataTables.js') }}"></script>
+    <script src="{{ asset('assets/plugins/dataTables/DataTables-1.10.24/js/dataTables.bootstrap4.js') }}"></script>
     <script>
+        const table = $('#table_empresas')
+        let Notificacion = {!! json_encode(session('notificacion')) !!}
+        let IDEmpresa = null
+
         $(document).ready( function () {
+            constructDatatable(false);
+
+            // SHOW MODALS
             $('#delete').on('show.bs.modal', showModalDelete)
             $('#active').on('show.bs.modal', showModalActive)
+
+            // FORMULARIOS
+            $('#formDelete').on('submit', submitFormDelete);
+            $('#formActive').on('submit', submitFormActive);
+            
+            if(Notificacion) customNotification(Notificacion.message, Notificacion.theme, Notificacion.type)
         });
+
+        // DATATABLE
+        function constructDatatable(isDestroy) {
+            if (isDestroy)
+                table.DataTable().destroy();
+
+            table.DataTable({
+                responsive: true,
+                autoWidth: false,
+                pageLength: 20,
+                lengthMenu: [[20, 50, 100], [20, 50, 100]],
+                processing:true,
+                "ajax": "{{ route('empresas.datatable_datos') }}",
+                language: {
+                    url: '{{ asset("datatable_español.json") }}'
+                },
+                "info": false,
+                "order": [[ 1, "asc" ]],
+                "columns": [
+                    {data: 'ruc', class: 'text-center'},
+                    {data: 'razon_social'},
+                    {data: 'email'},
+                    {data: 'activo', class: 'text-center'},
+                    {data: 'actions', class: 'text-center'}
+                ]
+            });
+        }
+        // END DATATABLE
         
+        // NOTIFICATION
+        function customNotification(mensaje, theme, type){
+            new Noty({
+                text: mensaje,
+                theme: theme,
+                type: type,
+                timeout: 4500,
+                progressBar: true,
+                animation: {
+                    open: 'animated bounceInRight', // Animate.css class names
+                    close: 'animated bounceOutRight' // Animate.css class names
+                }
+            }).show();
+        }
+        // END NOTIFICATION
+        // MODALS
         function showModalDelete(event) {
             var button = $(event.relatedTarget) // Button that triggered the modal
-            var id = button.data('id')
+            IDEmpresa = button.data('id')
             var razon_social = button.data('nombre')
-
-            let enlace = "{{ route('empresas.delete', ':id') }}"
-            enlace = enlace.replace(':id', id)
-
+            
             var modal = $(this)
             modal.find('#mensaje_delete').text(razon_social)
-            modal.find('#formDelete').attr('action', enlace)
         }
+
         function showModalActive(event) {
             var button = $(event.relatedTarget) // Button that triggered the modal
-            var id = button.data('id')
+            IDEmpresa = button.data('id')
             var razon_social = button.data('nombre')
-
-            let enlace = "{{ route('empresas.active', ':id') }}"
-            enlace = enlace.replace(':id', id)
 
             var modal = $(this)
             modal.find('#mensaje_active').text(razon_social)
-            modal.find('#formActive').attr('action', enlace)
         }
+        // END MODALS
+
+        // SUBMITS
+        function submitFormDelete(e){
+            e.preventDefault();
+            let enlace = "{{ route('empresas.delete', ':id') }}"
+            enlace = enlace.replace(':id', IDEmpresa)
+
+            $.ajax({
+                type: "PUT",
+                url: enlace,
+                data: $('#formDelete').serialize(),
+                success: function(response){
+                    if(response.error){
+                        $('.modal').modal('hide')
+                    }else{
+                        constructDatatable(true)
+                        $('.modal').modal('hide')
+                        customNotification(response.message, response.theme, response.type)
+                    }
+                },
+                error: function(error){
+                    console.log(error)
+                }
+            });
+        }
+
+        function submitFormActive(e){
+            e.preventDefault();
+            let enlace = "{{ route('empresas.active', ':id') }}"
+            enlace = enlace.replace(':id', IDEmpresa)
+
+            $.ajax({
+                type: "PUT",
+                url: enlace,
+                data: $('#formActive').serialize(),
+                success: function(response){
+                    if(response.error){
+                        $('.modal').modal('hide')
+                    }else{
+                        constructDatatable(true)
+                        $('.modal').modal('hide')
+                        customNotification(response.message, response.theme, response.type)
+                    }
+                },
+                error: function(error){
+                    console.log(error)
+                }
+            });
+        }
+        // END SUBMITS
     </script>
 @endsection
