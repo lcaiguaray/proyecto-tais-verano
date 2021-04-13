@@ -47,6 +47,16 @@ Ahora ejecuta servidor y abre la dirección en el navegador
 
 <pre>php artisan serve</pre>
 
+## Migraciones
+
+Abre la consola de comandos de Git y dirigase al directorio donde se encuentra el proyecto y ejecuta el comando:
+
+<pre>php artisan migrate</pre>
+
+Y por ultimo ejecuta el comando:
+
+<pre>php artisan db:seed</pre>
+
 ## About Laravel
 
 Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
