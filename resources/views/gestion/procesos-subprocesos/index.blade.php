@@ -1,7 +1,7 @@
 @extends('layouts.master')
 
-@section('title', '| Empresas')
-@section('item-empresas', 'active')
+@section('title', '| Procesos')
+@section('item-procesos', 'active')
 
 @section('css_after')
     <!-- Page JS Plugins CSS -->
@@ -13,9 +13,6 @@
         <div class="col-lg-8 col-md-8 col-sm-8 col-8">
             <h4><i class="mdi mdi-buffer"></i> Empresas</h4>
             <p class="text-gray">Lista de empresas</p>
-        </div>
-        <div class="col-lg-4 col-md-4 col-sm-4 col-4">
-            <a href="{{ route('empresas.create') }}" class="btn btn-inverse-success float-right float-xs-none has-icon"><i class="mdi mdi-library-plus"></i> Agregar Nuevo</a>
         </div>
     </div>
     <div class="row mt-4 equel-grid">
@@ -48,9 +45,6 @@
             </div>
         </div>
     </div>
-
-    @include('gestion.empresas.modals.delete')
-    @include('gestion.empresas.modals.active')
 @endsection
 
 @section('js_after')
@@ -60,18 +54,9 @@
     <script>
         const table = $('#table_empresas')
         let Notificacion = {!! json_encode(session('notificacion')) !!}
-        let IDEmpresa = null
 
         $(document).ready( function () {
             constructDatatable(false);
-
-            // SHOW MODALS
-            $('#delete').on('show.bs.modal', showModalDelete)
-            $('#active').on('show.bs.modal', showModalActive)
-
-            // FORMULARIOS
-            $('#formDelete').on('submit', submitFormDelete);
-            $('#formActive').on('submit', submitFormActive);
             
             if(Notificacion) customNotification(Notificacion.message, Notificacion.theme, Notificacion.type)
         });
@@ -87,7 +72,7 @@
                 pageLength: 20,
                 lengthMenu: [[20, 50, 100], [20, 50, 100]],
                 processing:true,
-                "ajax": "{{ route('empresas.datatable_datos') }}",
+                "ajax": "{{ route('procesos.datatable_empresas') }}",
                 language: {
                     url: '{{ asset("datatable_español.json") }}'
                 },
@@ -119,75 +104,5 @@
             }).show();
         }
         // END NOTIFICATION
-
-        // MODALS
-        function showModalDelete(event) {
-            var button = $(event.relatedTarget) // Button that triggered the modal
-            IDEmpresa = button.data('id')
-            var razon_social = button.data('nombre')
-            
-            var modal = $(this)
-            modal.find('#mensaje_delete').text(razon_social)
-        }
-
-        function showModalActive(event) {
-            var button = $(event.relatedTarget) // Button that triggered the modal
-            IDEmpresa = button.data('id')
-            var razon_social = button.data('nombre')
-
-            var modal = $(this)
-            modal.find('#mensaje_active').text(razon_social)
-        }
-        // END MODALS
-
-        // SUBMITS
-        function submitFormDelete(e){
-            e.preventDefault();
-            let enlace = "{{ route('empresas.delete', ':id') }}"
-            enlace = enlace.replace(':id', IDEmpresa)
-
-            $.ajax({
-                type: "PUT",
-                url: enlace,
-                data: $('#formDelete').serialize(),
-                success: function(response){
-                    if(response.error){
-                        $('.modal').modal('hide')
-                    }else{
-                        constructDatatable(true)
-                        $('.modal').modal('hide')
-                        customNotification(response.message, response.theme, response.type)
-                    }
-                },
-                error: function(error){
-                    console.log(error)
-                }
-            });
-        }
-
-        function submitFormActive(e){
-            e.preventDefault();
-            let enlace = "{{ route('empresas.active', ':id') }}"
-            enlace = enlace.replace(':id', IDEmpresa)
-
-            $.ajax({
-                type: "PUT",
-                url: enlace,
-                data: $('#formActive').serialize(),
-                success: function(response){
-                    if(response.error){
-                        $('.modal').modal('hide')
-                    }else{
-                        constructDatatable(true)
-                        $('.modal').modal('hide')
-                        customNotification(response.message, response.theme, response.type)
-                    }
-                },
-                error: function(error){
-                    console.log(error)
-                }
-            });
-        }
-        // END SUBMITS
     </script>
 @endsection

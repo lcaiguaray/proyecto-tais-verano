@@ -3,6 +3,7 @@
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
+use App\Enums\Sexo;
 
 class CreateUsuariosTable extends Migration
 {
@@ -23,13 +24,15 @@ class CreateUsuariosTable extends Migration
             $table->string('nombre', 100);
             $table->string('apellido_paterno', 100);
             $table->string('apellido_materno', 100);
-            $table->char('sexo', 1);
+            $table->enum('sexo', Sexo::getValues());
             $table->date('fecha_nacimiento')->nullable();
             $table->string('telefono', 20)->nullable();
             $table->string('direccion')->nullable();
             $table->boolean('activo')->default(true);
             $table->dateTime('deleted_at')->nullable();
             $table->dateTime('activated_at')->nullable();
+            $table->datetime('last_login_at')->nullable();
+            $table->string('last_login_ip')->nullable();
             $table->unsignedBigInteger('created_by');
             $table->unsignedBigInteger('updated_by')->nullable();
             $table->unsignedBigInteger('deleted_by')->nullable();

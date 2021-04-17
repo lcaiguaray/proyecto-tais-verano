@@ -3,7 +3,7 @@
 @section('title', '| Registrar Empresa')
 @section('item-empresas', 'active')
 
-@section('css_before')
+@section('css_after')
     <!-- Page JS Plugins CSS -->
     <link rel="stylesheet" href="{{ asset('assets/plugins/flatpickr/flatpickr.css') }}">
 @endsection
@@ -101,8 +101,9 @@
                                     <div class="form-group">
                                         <label for="sexo">Sexo <span class="text-success">*</span></label>
                                         <select class="form-control form-control-sm {{ $errors->has('sexo') ? ' is-invalid' : '' }}" id="sexo" name="sexo" required>
-                                            <option value="M" {{ (old('sexo') == 'M' ? "selected" : "") }}>Masculino</option>
-                                            <option value="F" {{ (old('sexo') == 'F' ? "selected" : "") }}>Femenino</option>
+                                            @foreach(sexos() as $sexo)
+                                                <option value="{{ $sexo->value }}" {{ (old('sexo') == $sexo->value ? "selected" : "") }}>{{ $sexo->description }}</option>
+                                            @endforeach
                                         </select>
                                         @if ($errors->has('sexo'))
                                             <span class="invalid-feedback" role="alert">

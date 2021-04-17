@@ -16,4 +16,9 @@ class Empresa extends Model
     protected $casts = [
         'activo' => 'boolean'
     ];
+
+    // RELATIONS
+    public function procesos(){
+        return $this->hasMany(Proceso::class);
+    }
 }

@@ -13,10 +13,6 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-/*Route::get('/', function () {
-    return view('welcome');
-});*/
-
 Auth::routes();
 
 Route::group(['middleware' => 'auth'], function () {
@@ -46,6 +42,19 @@ Route::group(['middleware' => 'auth'], function () {
         Route::put('/habilitar/{id}', 'Gestion\UsuarioController@active')->name('usuarios.active');
         // DATATABLE
         Route::get('/datatable', 'Gestion\UsuarioController@datatable_usuarios')->name('usuarios.datatable_datos');
+    });
+
+    // USUARIOS
+    Route::prefix('procesos')->group(function() {
+        Route::get('/', 'Gestion\ProcesoController@empresa')->name('procesos');
+        Route::get('/empresa/{id}', 'Gestion\ProcesoController@index')->name('procesos.index');
+        Route::post('/registrar/{id}', 'Gestion\ProcesoController@store')->name('procesos.store');
+        Route::put('/actualizar/{id}', 'Gestion\ProcesoController@update')->name('procesos.update');
+        Route::put('/deshabilitar/{id}', 'Gestion\ProcesoController@delete')->name('procesos.delete');
+        Route::put('/habilitar/{id}', 'Gestion\ProcesoController@active')->name('procesos.active');
+        // DATATABLE
+        Route::get('/datatable/empresas', 'Gestion\ProcesoController@datatable_empresas')->name('procesos.datatable_empresas');
+        Route::get('/datatable/{id}', 'Gestion\ProcesoController@datatable_procesos')->name('procesos.datatable_datos');
     });
 });
 

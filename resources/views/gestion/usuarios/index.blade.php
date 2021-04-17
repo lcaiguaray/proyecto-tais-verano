@@ -3,7 +3,7 @@
 @section('title', '| Usuarios')
 @section('item-usuarios', 'active')
 
-@section('css_before')
+@section('css_after')
     <!-- Page JS Plugins CSS -->
     <link rel="stylesheet" href="{{ asset('assets/plugins/dataTables/DataTables-1.10.24/css/dataTables.bootstrap4.css') }}">
 @endsection
