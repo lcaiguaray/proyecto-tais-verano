@@ -3,6 +3,7 @@
 namespace App\Modelos\Gestion;
 
 use Illuminate\Database\Eloquent\Model;
+use App\Modelos\Componentes\MapaProceso;
 
 class Empresa extends Model
 {
@@ -18,7 +19,7 @@ class Empresa extends Model
     ];
 
     // RELATIONS
-    public function procesos(){
-        return $this->hasMany(Proceso::class);
+    public function mapa_proceso(){
+        return $this->hasMany(MapaProceso::class);
     }
 }

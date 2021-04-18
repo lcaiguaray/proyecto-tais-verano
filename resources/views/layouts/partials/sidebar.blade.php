@@ -28,10 +28,4 @@
             <i class="mdi mdi-buffer link-icon"></i>
         </a>
     </li>
-    <li class="@yield('item-procesos')">
-        <a href="{{ route('procesos') }}">
-            <span class="link-title">Procesos</span>
-            <i class="mdi mdi-sitemap link-icon"></i>
-        </a>
-    </li>
 </ul>

@@ -31,7 +31,9 @@ class EmpresaController extends Controller
                 $buttons = '';
 
                 if($empresa->activo)
-                    $buttons = '<a href="'.route("empresas.edit", $empresa->id).'" class="btn btn-sm action-btn btn-inverse-info" title="Editar" data-original-title="Editar">
+                    $buttons = '<a href="'.route("empresas.componentes", $empresa->id).'" class="btn btn-sm action-btn btn-inverse-success" title="Componentes" data-original-title="Componentes">
+                        <i class="mdi mdi-folder"></i></a>
+                        <a href="'.route("empresas.edit", $empresa->id).'" class="btn btn-sm action-btn btn-inverse-info" title="Editar" data-original-title="Editar">
                         <i class="mdi mdi-lead-pencil"></i></a>
                     <button type="button" class="btn btn-sm action-btn btn-inverse-danger" data-toggle="modal" data-target="#delete" title="Deshabilitar" data-original-title="Deshabilitar" data-id="'.$empresa->id.'" data-nombre="'.$empresa->razon_social.'">
                         <i class="mdi mdi-arrow-down-bold-hexagon-outline"></i>
@@ -105,6 +107,12 @@ class EmpresaController extends Controller
         $empresa = Empresa::FindOrFail($id);
 
         return view('gestion.empresas.edit', compact('empresa'));
+    }
+
+    public function componentes($id){
+        $empresa = Empresa::FindOrFail($id);
+
+        return view('componentes.index', compact('empresa'));
     }
 
     public function update(Request $request, $id){

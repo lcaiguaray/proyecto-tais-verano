@@ -3,9 +3,9 @@
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <title>Label - Premium Responsive Bootstrap 4 Admin & Dashboard Template</title>
+    <title>TAIS</title>
     <!-- plugins:css -->
-    <link rel="stylesheet" href="../assets/vendors/iconfonts/mdi/css/materialdesignicons.css">
+    <link rel="stylesheet" href="{{ asset('assets/vendors/iconfonts/mdi/css/materialdesignicons.css') }}">
     <!-- endinject -->
     <!-- inject:css -->
     <link rel="stylesheet" href="{{ asset('assets/css/shared/style.css') }}">
@@ -14,11 +14,11 @@
     <link rel="shortcut icon" href="{{ asset('assets/images/logo.svg') }}" />
   </head>
   <body>
-    <div class="authentication-theme auth-style_1">
+    <div class="authentication-theme auth-style_1 pt-5">
         <div class="row">
-            <div class="col-12 logo-section">
-                <a href="../../index.html" class="logo">
-                    <img src="../../../assets/images/logo.svg" alt="logo" />
+            <div class="col-12 logo-section mb-2">
+                <a href="javascript:void(0)" class="logo">
+                    <img src="{{ asset('assets/images/Logo UNT.png') }}" alt="logo"/>
                 </a>
             </div>
         </div>
@@ -45,10 +45,6 @@
                                     </div>
                                     <button type="submit" class="btn btn-primary btn-block"> Acceder </button>
                                 </form>
-                                {{-- <div class="signup-link">
-                                    <p>¿No tienes una cuenta?</p>
-                                    <a href="{{ route('register') }}">Crear Cuenta</a>
-                                </div> --}}
                             </div>
                         </div>
                     </div>
@@ -56,7 +52,7 @@
             </div>
         </div>
         <div class="auth_footer">
-            <p class="text-muted text-center">© Label Inc 2019</p>
+            <p class="text-muted text-center">© Label Inc - TAIS 2021</p>
         </div>
     </div>
 

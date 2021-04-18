@@ -3,9 +3,9 @@
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
-use App\Enums\TipoProceso;
+use App\Enums\TipoObjeto;
 
-class CreateProcesosTable extends Migration
+class CreateIndicadorsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -14,12 +14,13 @@ class CreateProcesosTable extends Migration
      */
     public function up()
     {
-        Schema::create('procesos', function (Blueprint $table) {
+        Schema::create('indicadors', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('mapa_proceso_id')->constrained('mapa_procesos')->onDelete('cascade');
-            $table->string('nombre');
-            $table->enum('tipo', TipoProceso::getValues());
-            $table->text('descripcion')->nullable();
+            $table->enum('objeto_tipo', TipoObjeto::getValues());
+            $table->unsignedBigInteger('objeto_id');
+            $table->string('responsable');
+            $table->mediumText('meta');
+            $table->text('descripcion');
             $table->boolean('activo')->default(true);
             $table->dateTime('deleted_at')->nullable();
             $table->dateTime('activated_at')->nullable();
@@ -38,6 +39,6 @@ class CreateProcesosTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('procesos');
+        Schema::dropIfExists('indicadors');
     }
 }

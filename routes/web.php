@@ -1,5 +1,6 @@
 <?php
 
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -13,7 +14,7 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Auth::routes();
+Auth::routes(['register' => false]);
 
 Route::group(['middleware' => 'auth'], function () {
     Route::get('/', 'HomeController@index')->name('home');
@@ -29,6 +30,42 @@ Route::group(['middleware' => 'auth'], function () {
         Route::put('/habilitar/{id}', 'Gestion\EmpresaController@active')->name('empresas.active');
         // DATATABLE
         Route::get('/datatable', 'Gestion\EmpresaController@datatable_empresas')->name('empresas.datatable_datos');
+
+        Route::prefix('componentes')->group(function() {
+            Route::get('/{id}', 'Gestion\EmpresaController@componentes')->name('empresas.componentes');
+
+            // MAPA DE PROCESOS
+            Route::prefix('mapa-procesos')->group(function() {
+                Route::get('/{id}', 'Componentes\MapaProcesoController@index')->name('mapa_procesos');
+                Route::post('/registrar/{id}', 'Componentes\MapaProcesoController@store')->name('mapa_procesos.store');
+                Route::put('/actualizar/{id}', 'Componentes\MapaProcesoController@update')->name('mapa_procesos.update');
+                Route::put('/deshabilitar/{id}', 'Componentes\MapaProcesoController@delete')->name('mapa_procesos.delete');
+                Route::put('/habilitar/{id}', 'Componentes\MapaProcesoController@active')->name('mapa_procesos.active');
+                // DATATABLE
+                Route::get('/datatable/{id}', 'Componentes\MapaProcesoController@datatable_mapa_procesos')->name('mapa_procesos.datatable_datos');
+            });
+    
+            // PROCESOS
+            Route::prefix('procesos')->group(function() {
+                Route::get('/{id}', 'Componentes\ProcesoController@index')->name('procesos');
+                Route::post('/registrar', 'Componentes\ProcesoController@store')->name('procesos.store');
+                Route::put('/actualizar/{id}', 'Componentes\ProcesoController@update')->name('procesos.update');
+                Route::put('/deshabilitar/{id}', 'Componentes\ProcesoController@delete')->name('procesos.delete');
+                Route::put('/habilitar/{id}', 'Componentes\ProcesoController@active')->name('procesos.active');
+                // DATATABLE
+                Route::get('/datatable/{id}', 'Componentes\ProcesoController@datatable_procesos')->name('procesos.datatable_datos');
+    
+                Route::prefix('subprocesos')->group(function() {
+                    Route::get('/{id}', 'Componentes\SubprocesoController@index')->name('subprocesos');
+                    Route::post('/registrar/{id}', 'Componentes\SubprocesoController@store')->name('subprocesos.store');
+                    Route::put('/actualizar/{id}', 'Componentes\SubprocesoController@update')->name('subprocesos.update');
+                    Route::put('/deshabilitar/{id}', 'Componentes\SubprocesoController@delete')->name('subprocesos.delete');
+                    Route::put('/habilitar/{id}', 'Componentes\SubprocesoController@active')->name('subprocesos.active');
+                    // DATATABLE
+                    Route::get('/datatable/{id}', 'Componentes\SubprocesoController@datatable_subprocesos')->name('subprocesos.datatable_datos');
+                });
+            });
+        });
     });
 
     // USUARIOS
@@ -42,19 +79,6 @@ Route::group(['middleware' => 'auth'], function () {
         Route::put('/habilitar/{id}', 'Gestion\UsuarioController@active')->name('usuarios.active');
         // DATATABLE
         Route::get('/datatable', 'Gestion\UsuarioController@datatable_usuarios')->name('usuarios.datatable_datos');
-    });
-
-    // USUARIOS
-    Route::prefix('procesos')->group(function() {
-        Route::get('/', 'Gestion\ProcesoController@empresa')->name('procesos');
-        Route::get('/empresa/{id}', 'Gestion\ProcesoController@index')->name('procesos.index');
-        Route::post('/registrar/{id}', 'Gestion\ProcesoController@store')->name('procesos.store');
-        Route::put('/actualizar/{id}', 'Gestion\ProcesoController@update')->name('procesos.update');
-        Route::put('/deshabilitar/{id}', 'Gestion\ProcesoController@delete')->name('procesos.delete');
-        Route::put('/habilitar/{id}', 'Gestion\ProcesoController@active')->name('procesos.active');
-        // DATATABLE
-        Route::get('/datatable/empresas', 'Gestion\ProcesoController@datatable_empresas')->name('procesos.datatable_empresas');
-        Route::get('/datatable/{id}', 'Gestion\ProcesoController@datatable_procesos')->name('procesos.datatable_datos');
     });
 });
 
