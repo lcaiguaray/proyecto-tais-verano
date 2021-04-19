@@ -58,6 +58,18 @@ class MapaProcesoController extends Controller
         $type = "";
         $collection = collect([]);
 
+        $verificar = MapaProceso::where([
+            ['empresa_id', $id],
+            ['nombre', $request->nombre]
+        ])->get();
+
+        if($verificar->count() > 0){
+            $error = true;
+            $message = '<span class="font-weight-bold"><i class="mdi mdi-bell"></i> El nombre ingresado ya existe, ingrese otro por favor.</span>';
+            $theme = 'sunset';
+            $type = 'error';
+        }
+
         if(!$error){
             $mapa_proceso = new MapaProceso();
             $mapa_proceso->empresa_id = $id;

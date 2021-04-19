@@ -1,7 +1,7 @@
 @extends('layouts.master')
 
 @section('title', '| Registrar Empresa')
-@section('item-empresas', 'active')
+@section('item-usuarios', 'active')
 
 @section('css_after')
     <!-- Page JS Plugins CSS -->
@@ -35,7 +35,7 @@
                                 <div class="col-lg-3 col-md-3 col-sm-6">
                                     <div class="form-group">
                                         <label for="dni">DNI <span class="text-success">*</span></label>
-                                        <input type="text" class="form-control form-control-sm validar_numerico {{ $errors->has('dni') ? ' is-invalid' : '' }}" id="dni" name="dni" value="{{ old('dni', $usuario->dni) }}" maxlength="11" autocomplete="off" required>
+                                        <input type="text" class="form-control form-control-sm validar_numerico {{ $errors->has('dni') ? ' is-invalid' : '' }}" id="dni" name="dni" value="{{ old('dni', $usuario->dni) }}" maxlength="8" autocomplete="off" required>
                                         @if ($errors->has('dni'))
                                             <span class="invalid-feedback" role="alert">
                                                 <strong>{{ $errors->first('dni') }}</strong>
@@ -113,7 +113,7 @@
                                         @endif
                                     </div>
                                 </div>
-                                <div class="col-lg-3 col-md-3 col-sm-6">
+                                {{-- <div class="col-lg-3 col-md-3 col-sm-6">
                                     <div class="form-group">
                                         <label for="rol">Rol <span class="text-success">*</span></label>
                                         <select class="form-control form-control-sm {{ $errors->has('rol') ? ' is-invalid' : '' }}" id="rol" name="rol" required>
@@ -125,7 +125,7 @@
                                             </span>
                                         @endif
                                     </div>
-                                </div>
+                                </div> --}}
                                 <div class="col-lg-6 col-md-6 col-sm-12">
                                     <div class="form-group">
                                         <label for="email">Email <span class="text-success">*</span></label>

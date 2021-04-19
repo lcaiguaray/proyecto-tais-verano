@@ -1,7 +1,7 @@
 @extends('layouts.master')
 
 @section('title', '| Subprocesos')
-@section('item-procesos', 'active')
+@section('item-empresas', 'active')
 
 @section('css_after')
     <!-- Page JS Plugins CSS -->
@@ -302,6 +302,7 @@
                 success: function(response){
                     if(response.error){
                         $('.modal').modal('hide')
+                        customNotification(response.message, response.theme, response.type)
                     }else{
                         constructDatatable(true)
                         $('.modal').modal('hide')
@@ -326,6 +327,7 @@
                 success: function(response){
                     if(response.error){
                         $('.modal').modal('hide')
+                        customNotification(response.message, response.theme, response.type)
                     }else{
                         constructDatatable(true)
                         $('.modal').modal('hide')

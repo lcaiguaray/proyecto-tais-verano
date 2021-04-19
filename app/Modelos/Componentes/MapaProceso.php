@@ -23,6 +23,10 @@ class MapaProceso extends Model
         return $this->hasMany(Proceso::class);
     }
 
+    public function estrategia(){
+        return $this->hasMany(Estrategia::class);
+    }
+
     public function empresa(){
         return $this->belongsTo(Empresa::class);
     }

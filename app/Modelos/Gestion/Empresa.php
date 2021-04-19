@@ -22,4 +22,8 @@ class Empresa extends Model
     public function mapa_proceso(){
         return $this->hasMany(MapaProceso::class);
     }
+
+    public function asignar(){
+        return $this->hasMany(Asignar::class);
+    }
 }

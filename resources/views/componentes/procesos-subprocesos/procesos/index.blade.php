@@ -39,7 +39,7 @@
                                         <label for="mapa_proceso">Mapa de Proceso <span class="text-success">*</span></label>
                                         <select class="select2_form form-control form-control-sm" id="mapa_proceso" name="mapa_proceso" required>
                                             <option></option>
-                                            @foreach($empresa->mapa_proceso as $mapa_proceso)
+                                            @foreach($empresa->mapa_proceso->where('activo', true) as $mapa_proceso)
                                                 <option value="{{ $mapa_proceso->id }}" {{ (old('mapa_proceso') == $mapa_proceso->id ? "selected" : "") }}>{{ $mapa_proceso->nombre }}</option>
                                             @endforeach
                                         </select>
@@ -403,6 +403,7 @@
                 success: function(response){
                     if(response.error){
                         $('.modal').modal('hide')
+                        customNotification(response.message, response.theme, response.type)
                     }else{
                         constructDatatable(true)
                         $('.modal').modal('hide')
@@ -427,6 +428,7 @@
                 success: function(response){
                     if(response.error){
                         $('.modal').modal('hide')
+                        customNotification(response.message, response.theme, response.type)
                     }else{
                         constructDatatable(true)
                         $('.modal').modal('hide')

@@ -27,9 +27,8 @@
                 <div class="grid-body text-gray">
                     <div class="d-flex justify-content-between font-weight-bold">
                         <a href="{{ route('mapa_procesos', $empresa->id) }}" class="text-decoration-none text-reset">
-                            <p><i class="mdi mdi-map"></i> Mapa de Procesos</p>
+                            <p><span class="badge badge-primary"><i class="mdi mdi-map"></i></span> Mapa de Procesos</p>
                         </a>
-                        <span class="badge badge-primary">4</span>
                     </div>
                     <div class="wrapper w-50 mt-4">
                         <canvas height="45" id="stat-line_1"></canvas>
@@ -42,12 +41,39 @@
                 <div class="grid-body text-gray">
                     <div class="d-flex justify-content-between font-weight-bold">
                         <a href="{{ route('procesos', $empresa->id) }}" class="text-decoration-none text-reset">
-                            <p><i class="mdi mdi-sitemap"></i> Procesos</p>
+                            <p><span class="badge badge-primary"><i class="mdi mdi-sitemap"></i></span> Procesos</p>
                         </a>
-                        <span class="badge badge-primary">4</span>
                     </div>
                     <div class="wrapper w-50 mt-4">
                         <canvas height="45" id="stat-line_2"></canvas>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3 col-sm-6 col-6 equel-grid">
+            <div class="grid">
+                <div class="grid-body text-gray">
+                    <div class="d-flex justify-content-between font-weight-bold">
+                        <a href="{{ route('estrategias', $empresa->id) }}" class="text-decoration-none text-reset">
+                            <p><span class="badge badge-primary"><i class="mdi mdi-table-large"></i></span> Mapa Estratégico</p>
+                        </a>
+                    </div>
+                    <div class="wrapper w-50 mt-4">
+                        <canvas height="45" id="stat-line_3"></canvas>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3 col-sm-6 col-6 equel-grid">
+            <div class="grid">
+                <div class="grid-body text-gray">
+                    <div class="d-flex justify-content-between font-weight-bold">
+                        <a href="{{ route('indicadores', $empresa->id) }}" class="text-decoration-none text-reset">
+                            <p><span class="badge badge-primary"><i class="mdi mdi-apple-safari"></i></span> Indicadores</p>
+                        </a>
+                    </div>
+                    <div class="wrapper w-50 mt-4">
+                        <canvas height="45" id="stat-line_4"></canvas>
                     </div>
                 </div>
             </div>

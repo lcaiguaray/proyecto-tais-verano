@@ -10,7 +10,7 @@ use BenSampo\Enum\Contracts\LocalizedEnum;
  * @method static static OptionTwo()
  * @method static static OptionThree()
  */
-final class TipoObjeto extends Enum
+final class TipoObjeto extends Enum implements LocalizedEnum
 {
     const PROCESO       =   'P';
     const SUBPROCESO    =   'S';

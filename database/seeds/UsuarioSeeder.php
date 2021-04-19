@@ -2,6 +2,7 @@
 
 use Illuminate\Database\Seeder;
 use App\Modelos\Auth\Usuario;
+use App\Enums\Rol;
 
 class UsuarioSeeder extends Seeder
 {
@@ -23,5 +24,7 @@ class UsuarioSeeder extends Seeder
         $usuario->password = Hash::make('admin');
         $usuario->created_by = 1;
         $usuario->save();
+
+        $usuario->assignRole(Rol::ADMINISTRADOR);
     }
 }

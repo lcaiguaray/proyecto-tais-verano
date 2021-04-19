@@ -14,22 +14,23 @@
     <link rel="shortcut icon" href="{{ asset('assets/images/logo.svg') }}" />
   </head>
   <body>
-    <div class="authentication-theme auth-style_1 pt-5">
+    <div class="authentication-theme auth-style_1" >
         <div class="row">
-            <div class="col-12 logo-section mb-2">
-                <a href="javascript:void(0)" class="logo">
-                    <img src="{{ asset('assets/images/Logo UNT.png') }}" alt="logo"/>
-                </a>
-            </div>
-        </div>
-        <div class="row">
-            <div class="col-lg-5 col-md-7 col-sm-9 col-11 mx-auto">
+            <div class="col-lg-7 col-md-7 col-sm-9 col-11 mx-auto">
                 <div class="grid">
-                    <div class="grid-body">
+                    <div class="grid-body shadow-lg">
                         <div class="row">
-                            <div class="col-lg-7 col-md-8 col-sm-9 col-12 mx-auto form-wrapper">
+                            <div class="col-lg-5 col-md-6 col-sm-12 col-12 align-self-center">
+                                <div class="col-12 logo-section mb-2">
+                                    <a href="javascript:void(0)" class="logo">
+                                        <img src="{{ asset('assets/images/Logo UNT.png') }}" alt="logo"/>
+                                    </a>
+                                </div>
+                            </div>
+                            <div class="col-lg-7 col-md-6 col-sm-12 col-12 mx-auto form-wrapper">
                                 <form method="POST" action="{{ route('login') }}">
                                     @csrf
+                                    <h4 class="text-center text-primary font-weight-bold mb-4">INICIAR SESIÓN</h4>
                                     <div class="form-group">
                                         <label for="name">Usuario</label>
                                         <input type="text" class="form-control form-control-sm @error('name') is-invalid @enderror" id="name" name="name" value="{{ old('name') }}" required autofocus>

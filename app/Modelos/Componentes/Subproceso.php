@@ -21,4 +21,12 @@ class Subproceso extends Model
     public function proceso(){
         return $this->belongsTo(Proceso::class);
     }
+
+    public function estrategia(){
+        return $this->hasMany(Estrategia::class, 'objeto_id');
+    }
+
+    public function indicador(){
+        return $this->hasMany(Indicador::class, 'objeto_id');
+    }
 }

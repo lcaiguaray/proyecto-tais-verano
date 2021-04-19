@@ -153,6 +153,7 @@
                 success: function(response){
                     if(response.error){
                         $('.modal').modal('hide')
+                        customNotification(response.message, response.theme, response.type)
                     }else{
                         constructDatatable(true)
                         $('.modal').modal('hide')

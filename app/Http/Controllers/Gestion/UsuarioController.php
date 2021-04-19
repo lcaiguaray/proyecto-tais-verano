@@ -11,6 +11,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\Rule;
 use App\Modelos\Auth\Usuario;
+use App\Enums\Rol;
 use Carbon\Carbon;
 
 class UsuarioController extends Controller
@@ -107,6 +108,9 @@ class UsuarioController extends Controller
         $usuario->password = Hash::make($request->dni);
         $usuario->created_by = Auth::user()->id;
         $usuario->save();
+
+        if($request->rol == Rol::ADMINISTRADOR) $usuario->assignRole(Rol::ADMINISTRADOR);
+        else $usuario->assignRole(Rol::USUARIO);
         
         $message = '<span class="font-weight-bold"><i class="mdi mdi-bell"></i> Se ha registrado correctamente el usuario.</span>';
         $theme = 'sunset';

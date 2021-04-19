@@ -10,7 +10,7 @@ use BenSampo\Enum\Contracts\LocalizedEnum;
  * @method static static OptionTwo()
  * @method static static OptionThree()
  */
-final class Sexo extends Enum
+final class Sexo extends Enum implements LocalizedEnum
 {
     const HOMBRE    = 'H';
     const MUJER     = 'M';

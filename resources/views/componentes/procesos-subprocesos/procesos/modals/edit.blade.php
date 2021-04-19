@@ -17,7 +17,7 @@
                                 <label for="Emapa_proceso">Mapa de Proceso <span class="text-success">*</span></label>
                                 <select class="select2_form form-control form-control-sm" id="Emapa_proceso" name="Emapa_proceso" required>
                                     <option></option>
-                                    @foreach($empresa->mapa_proceso as $mapa_proceso)
+                                    @foreach($empresa->mapa_proceso->where('activo', true) as $mapa_proceso)
                                         <option value="{{ $mapa_proceso->id }}" {{ (old('Emapa_proceso') == $mapa_proceso->id ? "selected" : "") }}>{{ $mapa_proceso->nombre }}</option>
                                     @endforeach
                                 </select>

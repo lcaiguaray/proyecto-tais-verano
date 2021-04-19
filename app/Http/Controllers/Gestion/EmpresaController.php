@@ -10,6 +10,8 @@ use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Validation\Rule;
 use App\Modelos\Gestion\Empresa;
+use App\Modelos\Auth\Usuario;
+use App\Enums\Rol;
 use Carbon\Carbon;
 
 class EmpresaController extends Controller
@@ -20,24 +22,48 @@ class EmpresaController extends Controller
 
     // DATATABLES
     function datatable_empresas(){
-        $empresas = Empresa::all();
+        $usuario = Usuario::FindOrFail(Auth::user()->id);
+        $rol = $usuario->getRoleNames()->first();
 
+        if($rol == Rol::ADMINISTRADOR){
+            $empresas = Empresa::all();
+        }else{
+            $empresas = Empresa::join('asignars as asg', 'empresas.id', 'asg.empresa_id')
+                ->where([
+                    ['empresas.activo', true],
+                    ['asg.usuario_id', $usuario->id]
+                ])->select('empresas.*', 'asg.activo as act_detalle')
+                ->get();
+        }
+       
         return Datatables()->of($empresas)
             ->editColumn('activo', function(Empresa $empresa){
-                if($empresa->activo) return '<span class="badge badge-success">ACTIVA</span>';
-                else return '<span class="badge badge-danger">INACTIVA</span>';
+                if(!$empresa->act_detalle){
+                    if($empresa->activo) return '<span class="badge badge-success">ACTIVA</span>';
+                    else return '<span class="badge badge-danger">INACTIVA</span>';
+                }else{
+                    if($empresa->act_detalle) return '<span class="badge badge-success">ACTIVA</span>';
+                    else return '<span class="badge badge-danger">INACTIVA</span>';
+                }
             })
             ->addColumn('actions', function(Empresa $empresa){
                 $buttons = '';
 
                 if($empresa->activo)
-                    $buttons = '<a href="'.route("empresas.componentes", $empresa->id).'" class="btn btn-sm action-btn btn-inverse-success" title="Componentes" data-original-title="Componentes">
+                    if(!$empresa->act_detalle){
+                        $buttons = '<a href="'.route("empresas.componentes", $empresa->id).'" class="btn btn-sm action-btn btn-inverse-success" title="Componentes" data-original-title="Componentes">
+                            <i class="mdi mdi-folder"></i></a>
+                            <a href="'.route("empresas.edit", $empresa->id).'" class="btn btn-sm action-btn btn-inverse-info" title="Editar" data-original-title="Editar">
+                            <i class="mdi mdi-lead-pencil"></i></a>
+                        <button type="button" class="btn btn-sm action-btn btn-inverse-danger" data-toggle="modal" data-target="#delete" title="Deshabilitar" data-original-title="Deshabilitar" data-id="'.$empresa->id.'" data-nombre="'.$empresa->razon_social.'">
+                            <i class="mdi mdi-arrow-down-bold-hexagon-outline"></i>
+                        </button>';
+                    }else{
+                        $buttons = '<a href="'.route("empresas.componentes", $empresa->id).'" class="btn btn-sm action-btn btn-inverse-success" title="Componentes" data-original-title="Componentes">
                         <i class="mdi mdi-folder"></i></a>
                         <a href="'.route("empresas.edit", $empresa->id).'" class="btn btn-sm action-btn btn-inverse-info" title="Editar" data-original-title="Editar">
-                        <i class="mdi mdi-lead-pencil"></i></a>
-                    <button type="button" class="btn btn-sm action-btn btn-inverse-danger" data-toggle="modal" data-target="#delete" title="Deshabilitar" data-original-title="Deshabilitar" data-id="'.$empresa->id.'" data-nombre="'.$empresa->razon_social.'">
-                        <i class="mdi mdi-arrow-down-bold-hexagon-outline"></i>
-                    </button>';
+                        <i class="mdi mdi-lead-pencil"></i></a>';
+                    }
                 else
                     $buttons = '<button type="button" class="btn btn-sm action-btn btn-inverse-success" data-toggle="modal" data-target="#active" title="Habilitar" data-original-title="Habilitar" data-id="'.$empresa->id.'" data-nombre="'.$empresa->razon_social.'">
                         <i class="mdi mdi-arrow-up-bold-hexagon-outline"></i></button>';

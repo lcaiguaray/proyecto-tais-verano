@@ -5,10 +5,13 @@ namespace App\Modelos\Auth;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Spatie\Permission\Traits\HasRoles;
+use App\Modelos\Gestion\Asignar;
 
 class Usuario extends Authenticatable
 {
     use Notifiable;
+    use HasRoles;
 
     /**
      * The attributes that are mass assignable.
@@ -38,4 +41,15 @@ class Usuario extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+
+    // RELATIONS
+    public function asignar(){
+        return $this->hasMany(Asignar::class);
+    }
+
+    // Other methods
+    public function getNombreCompleto()
+    {
+        return $this->nombre.' '.$this->apellido_paterno.' '.$this->apellido_materno;
+    }
 }
