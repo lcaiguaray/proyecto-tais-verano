@@ -61,7 +61,7 @@
                                         </span>
                                     </div>
                                 </div>
-                                <div class="col-lg-5 col-md-5 col-sm-6">
+                                <div class="col-lg-5 col-md-5 col-sm-12">
                                     <div class="form-group">
                                         <label for="nombre">Nombre <span class="text-success">*</span></label>
                                         <input type="text" class="form-control form-control-sm" id="nombre" name="nombre" value="{{ old('nombre') }}" maxlength="255" required>

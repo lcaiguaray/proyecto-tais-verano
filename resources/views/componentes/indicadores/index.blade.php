@@ -104,10 +104,10 @@
                 "info": false,
                 "columns": [
                     {data: 'mapa_proceso_id', class: 'text-center'},
-                    {data: 'nombre', class: 'text-center'},
-                    {data: 'responsable', class: 'text-center'},
-                    {data: 'objeto_tipo', class: 'text-center'},
-                    {data: 'objeto_id', class: 'text-center'},
+                    {data: 'nombre', class: 'text-center text-wrap'},
+                    {data: 'responsable', class: 'text-center text-wrap'},
+                    {data: 'objeto_tipo', class: 'text-center text-wrap'},
+                    {data: 'objeto_id', class: 'text-center text-wrap'},
                     {data: 'actions', class: 'text-center'}
                 ],
                 "columnDefs": [{

@@ -17,7 +17,7 @@ class CreateAsignarsTable extends Migration
             $table->id();
             $table->foreignId('usuario_id')->constrained('usuarios')->onDelete('cascade');
             $table->foreignId('empresa_id')->constrained('empresas')->onDelete('cascade');
-            $table->text('descripcion');
+            $table->text('descripcion')->nullable();
             $table->boolean('activo')->default(true);
             $table->dateTime('deleted_at')->nullable();
             $table->dateTime('activated_at')->nullable();

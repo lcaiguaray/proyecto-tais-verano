@@ -31,7 +31,10 @@ class DataFuenteController extends Controller
                 else return $data->primer_parametro;
             })
             ->editColumn('fecha', function(DataFuente $data){
-                return getFecha($data->fecha);
+                if($data->indicador->frecuencia == TipoFrecuencia::DIARIO) return getFecha($data->fecha);
+                if($data->indicador->frecuencia == TipoFrecuencia::QUINCENAL) return getFecha($data->fecha);
+                if($data->indicador->frecuencia == TipoFrecuencia::MENSUAL) return getFecha($data->fecha, 'm/Y');
+                if($data->indicador->frecuencia == TipoFrecuencia::ANUAL) return getFecha($data->fecha, 'Y');
             })
             ->addColumn('actions', function(DataFuente $data){
                 return '<button type="button" class="btn btn-sm action-btn btn-inverse-info" data-toggle="modal" data-target="#modal-edit-fuente" title="Editar" data-original-title="Editar" data-id="'.$data->id.'" data-primero="'.$data->primer_parametro.'" data-segundo="'.$data->segundo_parametro.'"  data-fecha="'.getFecha($data->fecha).'">

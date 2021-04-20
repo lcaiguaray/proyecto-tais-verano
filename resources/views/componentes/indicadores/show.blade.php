@@ -104,7 +104,7 @@
                                             @if (tipo_formulas($indicador->formula) == 'Formula 01')
                                                 <p>{{ '[1-('.$indicador->primer_parametro.'/'.$indicador->segundo_parametro.')]*100' }}</p>
                                             @else
-                                                @if (tipo_formulas($indicador->formula) == 'Formula 01')
+                                                @if (tipo_formulas($indicador->formula) == 'Formula 02')
                                                     <p>{{ '('.$indicador->primer_parametro.'/'.$indicador->segundo_parametro.')*100' }}</p>
                                                 @else
                                                     <p>&pound;({{ $indicador->primer_parametro }})</p>

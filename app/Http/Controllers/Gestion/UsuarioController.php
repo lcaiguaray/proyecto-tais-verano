@@ -101,7 +101,7 @@ class UsuarioController extends Controller
         $usuario->dni = $request->dni;
         $usuario->telefono = $request->telefono;
         $usuario->sexo = $request->sexo;
-        $usuario->fecha_nacimiento = Carbon::parse($request->fecha_nacimiento)->format('Y-m-d');
+        if($request->fecha_nacimiento) $usuario->fecha_nacimiento = convertirA_fecha($request->fecha_nacimiento, false, 'd/m/Y');
         $usuario->email = $request->email;
         $usuario->direccion = $request->direccion;
         $usuario->name = $request->dni;
@@ -173,7 +173,7 @@ class UsuarioController extends Controller
         $usuario->dni = $request->dni;
         $usuario->telefono = $request->telefono;
         $usuario->sexo = $request->sexo;
-        $usuario->fecha_nacimiento = Carbon::parse($request->fecha_nacimiento)->format('Y-m-d');
+        if($request->fecha_nacimiento) $usuario->fecha_nacimiento = convertirA_fecha($request->fecha_nacimiento, false, 'd/m/Y');
         $usuario->email = $request->email;
         $usuario->direccion = $request->direccion;
         $usuario->update();
