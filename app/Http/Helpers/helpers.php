@@ -50,16 +50,18 @@ if (!function_exists('tipo_objetos')) {
 }
 
 if (!function_exists('tipo_frecuencias')) {
-    function tipo_frecuencias()
+    function tipo_frecuencias($tipo = null)
     {
-        return TipoFrecuencia::getInstances();
+        if($tipo) return TipoFrecuencia::getDescription($tipo);
+        else return TipoFrecuencia::getInstances();
     }
 }
 
 if (!function_exists('tipo_formulas')) {
-    function tipo_formulas()
+    function tipo_formulas($tipo = null)
     {
-        return TipoFormula::getInstances();
+        if($tipo) return TipoFormula::getDescription($tipo);
+        else return TipoFormula::getInstances();
     }
 }
 

@@ -288,7 +288,7 @@
                                             </div>
                                             <div id="show_formula3" class="form-group">
                                                 <div class="mb-3">
-                                                    <img src="{{ asset('assets/images/formulas/porcentual.jpeg') }}" class="rounded mx-auto d-block" style="width: 100%;" alt="Formula">
+                                                    <img src="{{ asset('assets/images/formulas/suma.jpeg') }}" class="rounded mx-auto d-block" style="width: 100%;" alt="Formula">
                                                 </div>
                                                 <div class="row">
                                                     <div class="col-12">

@@ -690,7 +690,7 @@ class IndicadorController extends Controller
         $indicador->resultados = $request->resultados;
         $indicador->meta = $request->meta;
         $indicador->iniciativa = $request->iniciativa;
-        $indicador->frecuencia = $request->frecuencia;
+        if($indicador->data_fuente->where('activo', true)->count() == 0) $indicador->frecuencia = $request->frecuencia;
         $indicador->formula = $request->formula;
         $indicador->tipo_condicion = $request->tipo_condicion;
         $indicador->condicion_rojo = $request->condicion_rojo;

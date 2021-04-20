@@ -205,6 +205,7 @@
                                                         <option value="{{ $item->value }}" {{ (old('frecuencia', $indicador->frecuencia) == $item->value ? "selected" : "") }}>{{ $item->description }}</option>
                                                     @endforeach
                                                 </select>
+                                                <small class="text-danger">{{ ($indicador->data_fuente->where('activo', true)->count() > 0) ? 'No se modificará porque ya tiene datos fuente.' : '' }}</small>
                                                 @if ($errors->has('frecuencia'))
                                                     <span class="invalid-feedback" role="alert">
                                                         <strong>{{ $errors->first('frecuencia') }}</strong>
@@ -289,7 +290,7 @@
                                             </div>
                                             <div id="show_formula3" class="form-group">
                                                 <div class="mb-3">
-                                                    <img src="{{ asset('assets/images/formulas/porcentual.jpeg') }}" class="rounded mx-auto d-block" style="width: 100%;" alt="Formula">
+                                                    <img src="{{ asset('assets/images/formulas/suma.jpeg') }}" class="rounded mx-auto d-block" style="width: 100%;" alt="Formula">
                                                 </div>
                                                 <div class="row">
                                                     <div class="col-12">

@@ -24,6 +24,7 @@
         <div class="col-lg-8 col-md-8 col-sm-8 col-8">
             <h4><i class="mdi mdi-apple-safari"></i> Visualizar</h4>
             <p class="text-gray">Visualizar Indicador</p>
+            <p class="text-gray">Frecuencia: {{ tipo_frecuencias($indicador->frecuencia) }}</p>
         </div>
     </div>
     <div class="row mt-4">
@@ -97,6 +98,20 @@
                                             <p>{{ $indicador->resultados }}</p>
                                         </div>
                                     </div>
+                                    <div class="col-lg-6 col-md-6 col-sm-6">
+                                        <div class="form-group">
+                                            <label class="font-weight-bold" for="resultados">Formula</label>
+                                            @if (tipo_formulas($indicador->formula) == 'Formula 01')
+                                                <p>{{ '[1-('.$indicador->primer_parametro.'/'.$indicador->segundo_parametro.')]*100' }}</p>
+                                            @else
+                                                @if (tipo_formulas($indicador->formula) == 'Formula 01')
+                                                    <p>{{ '('.$indicador->primer_parametro.'/'.$indicador->segundo_parametro.')*100' }}</p>
+                                                @else
+                                                    <p>&pound;({{ $indicador->primer_parametro }})</p>
+                                                @endif
+                                            @endif
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                             <div class="tab-pane fade" id="pills-fuente" role="tabpanel" aria-labelledby="pills-fuente-tab">
@@ -131,6 +146,11 @@
                                 </div>
                             </div>
                             <div class="tab-pane fade" id="pills-tablero" role="tabpanel" aria-labelledby="pills-tablero-tab">
+                                <div class="row mb-4 mt-4">
+                                    <div class="col-lg-8 col-md-8 col-sm-8 col-8">
+                                        <h4><i class="mdi mdi-view-array"></i> Tablero</h4>
+                                    </div>
+                                </div>
                                 <div class="table-responsive">
                                     <table class="table" style="width:100%">
                                         <tbody>
@@ -165,6 +185,36 @@
                                         </tbody>
                                     </table>
                                 </div>
+                                <div class="row mb-4 mt-4">
+                                    <div class="col-lg-8 col-md-8 col-sm-8 col-8">
+                                        <h4><i class="mdi mdi-chart-pie"></i> Resultados</h4>
+                                    </div>
+                                    <div class="col-lg-4 col-md-4 col-sm-4 col-4">
+                                        <button id="btnActualizar" type="button" class="btn btn-inverse-warning float-right float-xs-none has-icon" title="Actualizar tabla" data-original-title="Actualizar tabla">
+                                            <i class="mdi mdi-refresh"></i> Actualizar Resultados
+                                        </button>
+                                    </div>
+                                </div>
+                                <div class="table-responsive">
+                                    <table id="table_resultados" class="table" style="width:100%">
+                                        <thead>
+                                            <tr>
+                                                <th class="text-center" style="width: 20%">Fecha</th>
+                                                <th class="text-center" style="width: 20%">Formula</th>
+                                                <th class="text-center" style="width: 20%">Resultado</th>
+                                                <th class="text-center" style="width: 20%">Indicador</th>
+                                            </tr>
+                                        </thead>
+                                        <tfoot>
+                                            <tr>
+                                                <th class="text-center" style="width: 20%">Fecha</th>
+                                                <th class="text-center" style="width: 20%">Formula</th>
+                                                <th class="text-center" style="width: 20%">Resultado</th>
+                                                <th class="text-center" style="width: 20%">Indicador</th>
+                                            </tr>
+                                        </tfoot>
+                                    </table>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -187,10 +237,13 @@
     <script src="{{ asset('assets/plugins/flatpickr/l10n/es.js') }}"></script>
     <script>
         const table = $('#table_fuentes')
+        const tableResultados = $('#table_resultados')
+        let valTipoFormula = {!! json_encode($indicador->formula) !!}
         let IDData = null
 
         $(document).ready(function(){
             constructDatatable(false)
+            constructDatatableResultado(false)
             $(".select2_form").select2({
                 placeholder: "Seleccionar",
                 allowClear: false,
@@ -201,7 +254,7 @@
                 dateFormat: "d/m/Y",
                 locale: 'es',
                 maxDate: "today",
-                altInputClass: 'text-danger'
+                altInputClass: 'text-danger',
             });
 
             // SHOW MODALS
@@ -213,6 +266,9 @@
             $('#formEditFuente').on('submit', submitFormEditFuente)
             $('#formDeleteFuente').on('submit', submitFormDeleteFuente)
 
+            $('#btnActualizar').on('click', function(){
+                constructDatatableResultado(true)
+            })
             $('.validar_numerico').on('keypress', validaNumerico)
             $('.validar_decimal').on('keypress', validarDecimal)
         });
@@ -237,9 +293,36 @@
                 "info": false,
                 "order": [[ 1, "asc" ]],
                 "columns": [
-                    {data: 'valor', class: 'text-center'},
+                    {data: 'primer_parametro', class: 'text-center'},
                     {data: 'fecha', class: 'text-center'},
                     {data: 'actions', class: 'text-center'}
+                ]
+            });
+        }
+
+        function constructDatatableResultado(isDestroy) {
+            let enlace = "{{ route('datafuente.datatable_resultados', ':id') }}"
+            enlace = enlace.replace(':id', {!! json_encode($indicador->id) !!})
+            if (isDestroy)
+                tableResultados.DataTable().destroy();
+
+            tableResultados.DataTable({
+                responsive: true,
+                autoWidth: false,
+                pageLength: 20,
+                lengthMenu: [[20, 50, 100], [20, 50, 100]],
+                processing:true,
+                "ajax": enlace,
+                language: {
+                    url: '{{ asset("datatable_español.json") }}'
+                },
+                "info": false,
+                "order": [[ 0, "asc" ]],
+                "columns": [
+                    {data: 'fecha', class: 'text-center'},
+                    {data: 'formula', class: 'text-center'},
+                    {data: 'resultado', class: 'text-center'},
+                    {data: 'indicador', class: 'text-center'}
                 ]
             });
         }
@@ -265,12 +348,17 @@
         function showModalEditFuente(event){
             var button = $(event.relatedTarget) // Button that triggered the modal
             IDData = button.data('id')
-            let valor = button.data('valor')
+            let primero = button.data('primero')
+            let segundo = button.data('segundo')
             let fecha = button.data('fecha')
-            
+
+            $('#Eprimer_parametro').removeClass('is-invalid')
+            $('#Esegundo_parametro').removeClass('is-invalid')
+
             var modal = $(this)
             modal.find('#Efecha').val(fecha).trigger('change')
-            modal.find('#Evalor').val(valor)
+            modal.find('#Eprimer_parametro').val(primero)
+            if(valTipoFormula != 'F3') modal.find('#Esegundo_parametro').val(segundo)
         }
 
         function showModalDeleteFuente(event) {
@@ -289,6 +377,29 @@
             e.preventDefault()
             let enlace = "{{ route('datafuente.store', ':id') }}"
             enlace = enlace.replace(':id', {!! json_encode($indicador->id) !!})
+            let valPrimerParametro = null
+            let valSegundoParametro = null
+            if(valTipoFormula != 'F3'){
+                valPrimerParametro = $('#Cprimer_parametro').val()
+                valSegundoParametro = $('#Csegundo_parametro').val()
+                
+                if(Number(valSegundoParametro) >= Number(valPrimerParametro)){
+                    if(Number(valSegundoParametro) != 0){
+                        $('#Cprimer_parametro').removeClass('is-invalid')
+                        $('#Csegundo_parametro').removeClass('is-invalid')
+                    }else{
+                        $('#Cprimer_parametro').addClass('is-invalid')
+                        $('#Csegundo_parametro').addClass('is-invalid')
+                        customNotification('<span class="font-weight-bold"><i class="mdi mdi-bell"></i> El segundo parametro debe ser diferente de 0.</span>', 'sunset', 'error')
+                        return false;
+                    }
+                }else{
+                    $('#Cprimer_parametro').addClass('is-invalid')
+                    $('#Csegundo_parametro').addClass('is-invalid')
+                    customNotification('<span class="font-weight-bold"><i class="mdi mdi-bell"></i> El segundo parametro debe ser mayor que el primero.</span>', 'sunset', 'error')
+                    return false;
+                }
+            }
 
             $.ajax({
                 type: "POST",
@@ -297,7 +408,8 @@
                 success: function(response){
                     if(!response.error){
                         $('#Cfecha').val('')
-                        $('#Cvalor').val('')
+                        $('#Cprimer_parametro').val('')
+                        $('#Csegundo_parametro').val('')
                         constructDatatable(true)
                         $('.modal').modal('hide')
                         customNotification(response.message, response.theme, response.type)
@@ -315,6 +427,29 @@
             e.preventDefault()
             let enlace = "{{ route('datafuente.update', ':id') }}"
             enlace = enlace.replace(':id', IDData)
+            let valPrimerParametro = null
+            let valSegundoParametro = null
+            if(valTipoFormula != 'F3'){
+                valPrimerParametro = $('#Eprimer_parametro').val()
+                valSegundoParametro = $('#Esegundo_parametro').val()
+                
+                if(Number(valSegundoParametro) >= Number(valPrimerParametro)){
+                    if(Number(valSegundoParametro) != 0){
+                        $('#Eprimer_parametro').removeClass('is-invalid')
+                        $('#Esegundo_parametro').removeClass('is-invalid')
+                    }else{
+                        $('#Eprimer_parametro').addClass('is-invalid')
+                        $('#Esegundo_parametro').addClass('is-invalid')
+                        customNotification('<span class="font-weight-bold"><i class="mdi mdi-bell"></i> El segundo parametro debe ser diferente de 0.</span>', 'sunset', 'error')
+                        return false;
+                    }
+                }else{
+                    $('#Eprimer_parametro').addClass('is-invalid')
+                    $('#Esegundo_parametro').addClass('is-invalid')
+                    customNotification('<span class="font-weight-bold"><i class="mdi mdi-bell"></i> El segundo parametro debe ser mayor que el primero.</span>', 'sunset', 'error')
+                    return false;
+                }
+            }
 
             $.ajax({
                 type: "PUT",
@@ -323,7 +458,8 @@
                 success: function(response){
                     if(!response.error){
                         $('#Efecha').val('')
-                        $('#Evalor').val('')
+                        $('#Eprimer_parametro').val('')
+                        $('#Esegundo_parametro').val('')
                         constructDatatable(true)
                         $('.modal').modal('hide')
                         customNotification(response.message, response.theme, response.type)

@@ -64,7 +64,7 @@
                                 <div class="col-12">
                                     <div class="form-group">
                                         <label for="descripcion">Descripcion</label>
-                                        <textarea class="form-control form-control-sm {{ $errors->has('descripcion') ? ' is-invalid' : '' }}" id="descripcion" name="descripcion" rows="2" required>{{ old('descripcion') }}</textarea>
+                                        <textarea class="form-control form-control-sm {{ $errors->has('descripcion') ? ' is-invalid' : '' }}" id="descripcion" name="descripcion" rows="2">{{ old('descripcion') }}</textarea>
                                         @if ($errors->has('descripcion'))
                                             <span class="invalid-feedback" role="alert">
                                                 <strong>{{ $errors->first('descripcion') }}</strong>

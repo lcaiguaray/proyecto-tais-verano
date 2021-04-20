@@ -13,11 +13,8 @@ use BenSampo\Enum\Contracts\LocalizedEnum;
 final class TipoFrecuencia extends Enum implements LocalizedEnum
 {
     const DIARIO          = 'D';
-    const SEMANAL         = 'S';
     const QUINCENAL       = 'Q';
     const MENSUAL         = 'M';
-    const BIMESTRAL       = 'B';
-    const TRIMESTRAL      = 'T';
     const ANUAL           = 'A';
 
     public static function getDescription($value): string
@@ -26,20 +23,11 @@ final class TipoFrecuencia extends Enum implements LocalizedEnum
             case self::DIARIO:
                 return "Diario";
 
-            case self::SEMANAL:
-                return "Semanal";
-
             case self::QUINCENAL:
                 return "Quincenal";
     
             case self::MENSUAL:
                 return "Mensual";
-
-            case self::BIMESTRAL:
-                return "Bimestral";
-
-            case self::TRIMESTRAL:
-                return "Trimestral";
             
             case self::ANUAL:
                 return "Anual";

@@ -98,6 +98,7 @@ Route::group(['middleware' => 'auth'], function () {
                     Route::put('/deshabilitar/{id}', 'Componentes\DataFuenteController@delete')->name('datafuente.delete');
                     // DATATABLE
                     Route::get('/datatable/{id}', 'Componentes\DataFuenteController@datatable_datos')->name('datafuente.datatable_datos');
+                    Route::get('/datatable/resultados/{id}', 'Componentes\DataFuenteController@datatable_resultados')->name('datafuente.datatable_resultados');
                 });
             });
         });

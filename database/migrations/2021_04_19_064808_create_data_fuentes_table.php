@@ -17,7 +17,8 @@ class CreateDataFuentesTable extends Migration
             $table->id();
             $table->foreignId('indicador_id')->constrained('indicadors')->onDelete('cascade');
             $table->date('fecha');
-            $table->unsignedDecimal('valor', 7, 2);
+            $table->unsignedDecimal('primer_parametro', 7, 2);
+            $table->unsignedDecimal('segundo_parametro', 7, 2)->nullable();
             $table->boolean('activo')->default(true);
             $table->dateTime('deleted_at')->nullable();
             $table->dateTime('activated_at')->nullable();
